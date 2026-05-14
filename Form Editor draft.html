@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Form Builder - Functional Submit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .draggable-item { cursor: grab; }
+        .draggable-item:active { cursor: grabbing; }
+        .drop-zone { border: 2px dashed #0d6efd; min-height: 85vh; transition: 0.2s; background-size: cover; background-position: center; }
+        .drop-zone.dragover { background-color: #f1f8ff !important; border-color: #198754 !important; }
+        .dropped-item { cursor: pointer; transition: border 0.2s; border: 1px solid transparent; }
+        .dropped-item.selected { border: 2px solid #0d6efd !important; border-radius: 0.375rem; }
+        .label-col { width: 40%; font-weight: 700; padding-right: 8px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .input-col { width: 60%; }
+    </style>
+</head>
+<body class="bg-light" style="font-size: 0.85rem;">
+<div class="container-fluid vh-100">
+    <div class="row vh-100">
+        <div class="col-md-3 border-end bg-white overflow-auto vh-100 p-2" id="source-panel">
+            <h6 class="text-primary border-bottom pb-2 mb-3 fw-bold">Available Elements</h6>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-checkbox" data-type="Checkbox" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">Checkbox1</label>
+                    <div class="input-col">
+                        <input class="form-check-input p-2" type="checkbox" name="Checkbox1">
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-switch" data-type="Switch" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">Switch1</label>
+                    <div class="input-col">
+                        <div class="form-check form-switch m-0 p-0">
+                            <input class="form-check-input ms-0 p-2" type="checkbox" role="switch" name="Switch1" style="width: 2.5em; height: 1.25em;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-radio" data-type="RadioGroup" data-count="1">
+                <div class="d-flex align-items-start w-100">
+                    <label class="label-col">RadioGroup1</label>
+                    <div class="input-col">
+                        <div class="form-check">
+                            <input class="form-check-input p-2" type="radio" name="RadioGroup1" value="Radio1">
+                            <label class="form-check-label small ms-1">Radio1</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input p-2" type="radio" name="RadioGroup1" value="Radio2">
+                            <label class="form-check-label small ms-1">Radio2</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input p-2" type="radio" name="RadioGroup1" value="Radio3">
+                            <label class="form-check-label small ms-1">Radio3</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-select" data-type="Select" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">Select1</label>
+                    <div class="input-col">
+                        <select class="form-select form-select-sm p-2" name="Select1">
+                            <option>Option1</option>
+                            <option>Option2</option>
+                            <option>Option3</option>
+                            <option>Option4</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-text" data-type="TextInput" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">TextInput1</label>
+                    <div class="input-col">
+                        <input type="text" class="form-control form-control-sm p-2" name="TextInput1">
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-url" data-type="URLInput" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">URLInput1</label><div class="input-col">
+                        <input type="url" class="form-control form-control-sm p-2" name="URLInput1" placeholder="https://">
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-password" data-type="Password" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">Password1</label><div class="input-col">
+                        <input type="password" class="form-control form-control-sm p-2" name="Password1">
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-email" data-type="Email" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">Email1</label><div class="input-col">
+                        <input type="email" class="form-control form-control-sm p-2" name="Email1">
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-textarea" data-type="TextArea" data-count="1">
+                <div class="d-flex align-items-start w-100">
+                    <label class="label-col">TextArea1</label><div class="input-col">
+                        <textarea class="form-control form-control-sm p-2" name="TextArea1" rows="1"></textarea>
+                    </div
+                    ></div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-date" data-type="DatePicker" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">DatePicker1</label><div class="input-col">
+                        <input type="date" class="form-control form-control-sm p-2" name="DatePicker1">
+                    </div>
+                </div>
+            </div>
+            <div class="draggable-item border rounded bg-white shadow-sm p-2 mb-2" draggable="true" id="src-submit" data-type="SubmitBtn" data-count="1">
+                <div class="d-flex align-items-center w-100">
+                    <label class="label-col">SubmitBtn1</label><div class="input-col">
+                        <button type="submit" class="btn btn-primary btn-sm w-100 p-2">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5 p-3">
+            <h6 class="text-success border-bottom pb-2 mb-3 fw-bold">Generated Form (ID: main-generated-form)</h6>
+            <form id="main-generated-form" method="GET" action="" class="drop-zone bg-white rounded p-3 shadow-sm"></form>
+        </div>
+
+        <div class="col-md-4 border-start bg-white p-3 vh-100 overflow-auto" id="editor-panel">
+            <h6 class="text-secondary border-bottom pb-2 mb-3 fw-bold">Properties</h6>
+            <div id="editor-content">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="edit-rename" placeholder="Rename">
+                    <label>Rename Selected Input</label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Set Input Background</label>
+                    <input type="color" class="form-control form-control-color w-100 p-1" id="edit-bg" value="#ffffff"
+                    ></div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Set Input Font Color</label>
+                    <input type="color" class="form-control form-control-color w-100 p-1" id="edit-font-color" value="#000000">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Set Input Width</label>
+                    <div class="d-flex align-items-center">
+                        <input type="range" class="form-range me-2" id="edit-width-range" min="10" max="100" value="100">
+                        <input type="number" class="form-control form-control-sm text-center" id="edit-width-num" style="width: 60px;" value="100">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Set Input Height</label>
+                    <div class="d-flex align-items-center">
+                        <input type="range" class="form-range me-2" id="edit-height-range" min="20" max="200" value="38">
+                        <input type="number" class="form-control form-control-sm text-center" id="edit-height-num" style="width: 60px;" value="38">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Set Input Label Font</label>
+                    <select class="form-select" id="edit-font">
+                        <option value="Arial">Arial</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                    </select>
+                </div>
+                <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="edit-required">
+                    <label class="form-check-label">Turn Input Required</label>
+                </div>
+                <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="edit-disabled">
+                    <label class="form-check-label">Disable Input</label>
+                </div>
+                <button type="button" class="btn btn-outline-primary btn-sm w-100 mb-2" id="btn-validate">Validate Input</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 mb-2" id="btn-random-bg">Random Form Background Image</button>
+                <button type="button" class="btn btn-outline-danger btn-sm w-100 mb-4" id="btn-clear-bg">Clear Form Background Image</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	// DROPPING LOGIC
+    const targetForm = document.getElementById('main-generated-form');
+
+    document.getElementById('source-panel').addEventListener('dragstart', e => {
+        const item = e.target.closest('.draggable-item');
+        if (item) e.dataTransfer.setData("text/plain", item.id);
+    });
+
+    targetForm.addEventListener('dragover', e => e.preventDefault());
+    targetForm.addEventListener('drop', e => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData("text/plain");
+        const sourceEl = document.getElementById(id);
+        if (!sourceEl) return;
+
+        const type = sourceEl.getAttribute('data-type');
+        
+        // LIMITATION: ONLY ONE SUBMIT BUTTON IS ALLOWED!
+        if (type === 'SubmitBtn' && targetForm.querySelector('[type="submit"]')) {
+            alert("Only one submit button is allowed.");
+            return;
+        }
+
+		// CREATE THE ELEMENT TO BE DROPPED INTO THE FORM (CLONE OF THE SOURCE)
+        const count = sourceEl.getAttribute('data-count');
+        const clone = sourceEl.cloneNode(true);
+        clone.classList.remove('draggable-item');
+        clone.classList.add('dropped-item');
+        clone.removeAttribute('draggable');
+        clone.id = `dropped_${type}${count}`;
+
+        // ASSIGNMENT OF THE DROPPED ELEMENT TO THE FORM
+        clone.querySelectorAll('input, select, textarea, button').forEach(ctrl => {
+            ctrl.setAttribute('form', 'main-generated-form');
+        });
+        
+        // SELECTION OF THE ELEMENT INSIDE THE FORM
+        clone.addEventListener('click', function(ev) {
+            document.querySelectorAll('.dropped-item').forEach(el => el.classList.remove('selected'));
+            this.classList.add('selected');
+            syncEditor(this);
+        });
+
+        // DISPLAY THE ELEMENT INSIDE THE FORM
+        targetForm.appendChild(clone);
+        
+        // UPDATE THE SOURCE ELEMENT WITH INCREMENTED SERIAL NUMBER
+        updateSourceElement(sourceEl);
+    });
+
+    function updateSourceElement(el) {
+        let count = parseInt(el.getAttribute('data-count'));
+        const type = el.getAttribute('data-type');
+        const nextCount = count + 1;
+        el.querySelectorAll('*').forEach(child => {
+            ['id', 'name', 'for'].forEach(attr => { if (child.hasAttribute(attr)) child.setAttribute(attr, child.getAttribute(attr).replace(new RegExp(type + count, 'g'), type + nextCount)); });
+            child.childNodes.forEach(node => { if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() === type + count) node.textContent = type + nextCount; });
+        });
+        el.setAttribute('data-count', nextCount);
+    }
+    
+    function syncEditor(element) {
+        const input = element.querySelector('input, select, textarea, button');
+        const label = element.querySelector('.label-col');
+        document.getElementById('edit-rename').value = label ? label.textContent : "";
+        document.getElementById('edit-required').checked = input.required || false;
+        document.getElementById('edit-disabled').checked = input.disabled || false;
+        document.getElementById('edit-font').value = label.style.fontFamily || "Arial";
+    }
+</script>
+<script>
+    // EDITOR LOGIC:
+    // YOU WILL MANIPULATE EITHER THE SELECTED INPUT ELEMENT OR ITS LABEL, OR ITS ENCLOSING BOX
+
+	// IMPLEMENT THE RENAMING OF THE SELECTED INPUT'S LABEL
+    
+    // IMPLEMENT THE BACKGROUND COLOR CHANGE OF THE SELECTED INPUT ELEMENT
+
+    // IMPLEMENT THE FONT COLOR CHANGE OF THE SELECTED INPUT ELEMENT
+
+    // IMPLEMENT THE SIZE CHANGE OF THE INPUT ELEMENT'S ENCLOSING BOX
+
+    // IMPLEMENT THE FONT FAMILY CHANGE OF THE SELECTED INPUT ELEMENT
+
+    // IMPLEMENT THE TOGGLE BETWEEN REQUIRED/OPTIONAL STATE OF AN INPUT ELEMENT
+
+    // IMPLEMENT THE DISABLEMENT/ENABLEMENT OF AN INPUT ELEMENT
+
+    // TRIGGER THE VALIDATION OF AN INPUT ELEMENT
+
+    // IMPLEMENT THE SET AND CLEAR OF THE FORM BACKGROUND IMAGE TAKEN FROM https://picsum.photos/1200/800?random=X
+
+    // LOG GET PARAMETERS TO CONSOLE ON LOAD, IF ANY
+
+    // HELPER: get selected element
+    function getSelected() {
+        return document.querySelector(".dropped-item.selected");
+    }
+    const editRename = document.getElementById("edit-rename");
+    const editBg = document.getElementById("edit-bg");
+    const editFontColor = document.getElementById("edit-font-color");
+    const editWidthRange = document.getElementById("edit-width-range");
+    const editWidthNum = document.getElementById("edit-width-num");
+    const editHeightRange = document.getElementById("edit-height-range");
+    const editHeightNum = document.getElementById("edit-height-num");
+    const editFont = document.getElementById("edit-font");
+    const editRequired = document.getElementById("edit-required");
+    const editDisabled = document.getElementById("edit-disabled");
+    const btnValidate = document.getElementById("btn-validate");
+    const btnRandomBg = document.getElementById("btn-random-bg");
+    const btnClearBg = document.getElementById("btn-clear-bg");
+//renaming
+    editRename.addEventListener("input", e => {
+        const el = getSelected();
+        if (!el) return;
+        const label = el.querySelector(".label-col");
+        if (label) label.textContent = e.target.value;
+    });
+
+//background color
+    editBg.addEventListener("input", e => {
+        const el = getSelected();
+        if (!el) return;
+        const input = el.querySelector("input, select, textarea");
+        if (input) input.style.backgroundColor = e.target.value;
+    });
+
+//font color
+    editFontColor.addEventListener("input", e => {
+        const el = getSelected();
+        if (!el) return;
+        const input = el.querySelector("input, select, textarea");
+        if (input) input.style.color = e.target.value;
+    });
+
+//width
+    editWidthRange.addEventListener("input", e => {
+        const el = getSelected();
+        if (!el) return;
+        el.style.width = e.target.value + "%";
+        editWidthNum.value = e.target.value;
+    });
+
+    editWidthNum.addEventListener("input", e => {
+        const el = getSelected();
+        if (!el) return;
+        el.style.width = e.target.value + "%";
+        editWidthRange.value = e.target.value;
+    });
+//height
+    editHeightRange.addEventListener("input", e => {
+        const el = getSelected();
+        if (!el) return;
+        const input = el.querySelector("input, select, textarea, button");
+        if (input) input.style.height = e.target.value + "px";
+        editHeightNum.value = e.target.value;
+    });
+
+    editHeightNum.addEventListener("input", e => {
+        const el = getSelected();
+        if (!el) return;
+        const input = el.querySelector("input, select, textarea, button");
+        if (input) input.style.height = e.target.value + "px";
+        editHeightRange.value = e.target.value;
+    });
+
+//font family
+    editFont.addEventListener("change", e => {
+        const el = getSelected();
+        if (!el) return;
+        const label = el.querySelector(".label-col");
+        if (label) label.style.fontFamily = e.target.value;
+    });
+
+//required
+    editRequired.addEventListener("change", e => {
+        const el = getSelected();
+        if (!el) return;
+        const input = el.querySelector("input, select, textarea");
+        if (input) input.required = e.target.checked;
+    });
+
+//disabled
+    editDisabled.addEventListener("change", e => {
+        const el = getSelected();
+        if (!el) return;
+        const input = el.querySelector("input, select, textarea");
+        if (input) input.disabled = e.target.checked;
+    });
+
+//validation
+    btnValidate.addEventListener("click", () => {
+        const el = getSelected();
+        if (!el) return;
+        const input = el.querySelector("input, select, textarea");
+        if (input) input.reportValidity();
+    });
+
+//background image
+    btnRandomBg.addEventListener("click", () => {
+        targetForm.style.backgroundImage =
+            `url(https://picsum.photos/1200/800?random=${Math.floor(Math.random() * 1000)})`;
+    });
+    btnClearBg.addEventListener("click", () => {
+        targetForm.style.backgroundImage = "none";
+    });
+
+//get parameter
+    const params = new URLSearchParams(window.location.search);
+    if ([...params].length > 0) {
+        console.log("GET PARAMETERS:");
+        for (let [key, value] of params) {
+            console.log(key + " = " + value);
+        }
+    }
+</script>
+
+</body>
+</html>
